@@ -8,15 +8,17 @@
  * letter to Creative Commons, 171 Second Street, Suite 300,            *
  * San Francisco, California, 94105, USA.                               *
  *----------------------------------------------------------------------*/ 
- 
+
 #ifndef Timezone_h
 #define Timezone_h
+
 #if ARDUINO >= 100
-#include <Arduino.h> 
+ #include <Arduino.h> 
 #else
-#include <WProgram.h> 
+ #include <WProgram.h> 
 #endif
-#include <Time.h>              //http://www.arduino.cc/playground/Code/Time
+
+#include <TimeLib.h>              //http://www.arduino.cc/playground/Code/Time
 
 //convenient constants for dstRules
 enum week_t {Last, First, Second, Third, Fourth}; 
@@ -39,14 +41,18 @@ class Timezone
 {
     public:
         Timezone(TimeChangeRule dstStart, TimeChangeRule stdStart);
-        Timezone(int address);
+        #if defined(__AVR__)
+          Timezone(int address);
+        #endif
         time_t toLocal(time_t utc);
         time_t toLocal(time_t utc, TimeChangeRule **tcr);
         time_t toUTC(time_t local);
         boolean utcIsDST(time_t utc);
         boolean locIsDST(time_t local);
-        void readRules(int address);
-        void writeRules(int address);
+        #if defined(__AVR__)
+          void readRules(int address);
+          void writeRules(int address);
+        #endif
 
     private:
         void calcTimeChanges(int yr);

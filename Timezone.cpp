@@ -9,7 +9,10 @@
  * San Francisco, California, 94105, USA.                               *
  *----------------------------------------------------------------------*/
 
-#include <avr/eeprom.h>
+#if defined(__AVR__)
+ #include <avr/eeprom.h>
+#endif
+
 #include "Timezone.h"
 
 /*----------------------------------------------------------------------*
@@ -21,6 +24,7 @@ Timezone::Timezone(TimeChangeRule dstStart, TimeChangeRule stdStart)
     _std = stdStart;
 }
 
+#if defined(__AVR__)
 /*----------------------------------------------------------------------*
  * Create a Timezone object from time change rules stored in EEPROM     *
  * at the given address.                                                *
@@ -29,7 +33,7 @@ Timezone::Timezone(int address)
 {
     readRules(address);
 }
-
+#endif
 /*----------------------------------------------------------------------*
  * Convert the given UTC time to local time, standard or                *
  * daylight time, as appropriate.                                       *
@@ -176,8 +180,9 @@ time_t Timezone::toTime_t(TimeChangeRule r, int yr)
     return t;
 }
 
+#if defined(__AVR__)
 /*----------------------------------------------------------------------*
- * Read the daylight and standard time rules from EEPROM at				*
+ * Read the daylight and standard time rules from EEPROM at             *
  * the given address.                                                   *
  *----------------------------------------------------------------------*/
 void Timezone::readRules(int address)
@@ -188,7 +193,7 @@ void Timezone::readRules(int address)
 }
 
 /*----------------------------------------------------------------------*
- * Write the daylight and standard time rules to EEPROM at				*
+ * Write the daylight and standard time rules to EEPROM at              *
  * the given address.                                                   *
  *----------------------------------------------------------------------*/
 void Timezone::writeRules(int address)
@@ -197,3 +202,4 @@ void Timezone::writeRules(int address)
     address += sizeof(_dst);
     eeprom_write_block((void *) &_std, (void *) address, sizeof(_std));
 }
+#endif
