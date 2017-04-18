@@ -1,0 +1,19 @@
+#
+# .gitignore
+#
+
+###
+# ignore basic backup files
+###
+*.bak
+*.tmp
+tmp_*
+*.orig
+
+
+
+
+###
+# Temporary Ignores
+###
+*.zip
