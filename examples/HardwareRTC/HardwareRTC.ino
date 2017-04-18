@@ -32,43 +32,42 @@ Timezone myTZ(myDST, mySTD);
 TimeChangeRule *tcr;        //pointer to the time change rule, use to get TZ abbrev
 time_t utc, local;
 
-void setup(void)
-{
-    Serial.begin(115200);
-    setSyncProvider(RTC.get);   // the function to get the time from the RTC
-    if(timeStatus()!= timeSet) 
-        Serial.println("Unable to sync with the RTC");
-    else
-        Serial.println("RTC has set the system time");      
+void setup() {
+	Serial.begin(115200);
+	setSyncProvider(RTC.get);	// the function to get the time from the RTC
+
+	if (timeStatus()!= timeSet) {
+		Serial.println("Unable to sync with the RTC");
+	} else {
+		Serial.println("RTC has set the system time");
+	}
 }
 
-void loop(void)
-{
-    Serial.println();
-    utc = now();
-    printTime(utc, "UTC");
-    local = myTZ.toLocal(utc, &tcr);
-    printTime(local, tcr -> abbrev);
-    delay(10000);
+void loop() {
+	Serial.println();
+	utc = now();
+	printTime(utc, "UTC");
+	local = myTZ.toLocal(utc, &tcr);
+	printTime(local, tcr->abbrev);
+	delay(10000);
 }
 
 //Function to print time with time zone
-void printTime(time_t t, char *tz)
-{
-    sPrintI00(hour(t));
-    sPrintDigits(minute(t));
-    sPrintDigits(second(t));
-    Serial.print(' ');
-    Serial.print(dayShortStr(weekday(t)));
-    Serial.print(' ');
-    sPrintI00(day(t));
-    Serial.print(' ');
-    Serial.print(monthShortStr(month(t)));
-    Serial.print(' ');
-    Serial.print(year(t));
-    Serial.print(' ');
-    Serial.print(tz);
-    Serial.println();
+void printTime(time_t t, char *tz) {
+	sPrintI00(hour(t));
+	sPrintDigits(minute(t));
+	sPrintDigits(second(t));
+	Serial.print(' ');
+	Serial.print(dayShortStr(weekday(t)));
+	Serial.print(' ');
+	sPrintI00(day(t));
+	Serial.print(' ');
+	Serial.print(monthShortStr(month(t)));
+	Serial.print(' ');
+	Serial.print(year(t));
+	Serial.print(' ');
+	Serial.print(tz);
+	Serial.println();
 }
 
 //Print an integer in "00" format (with leading zero).
