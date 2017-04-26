@@ -80,6 +80,7 @@ struct TimeChangeRule {
 class Timezone {
 public:
 	Timezone(TimeChangeRule dstStart, TimeChangeRule stdStart);
+
 #ifdef __AVR__
 	Timezone(int address);
 #endif	/* __AVR__ */
