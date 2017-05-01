@@ -17,3 +17,8 @@ tmp_*
 # Temporary Ignores
 ###
 *.zip
+
+###
+# Ignore Doxygen-generated documentation, for now.
+###
+docs/doxygen/

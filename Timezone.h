@@ -27,45 +27,55 @@
 #include <TimeLib.h>		/* <http://www.arduino.cc/playground/Code/Time> */
 
 
-/* convenient constants for dstRules */
+/**
+ * \enum week_t Provides helpful values for week-of-month definitions for use with DST rules.
+ */
 enum week_t {
-	Last,
-	First,
-	Second,
-	Third,
-	Fourth
+	Last,	/*!< The last week of the month */
+	First,	/*!< The first week of the month */
+	Second,	/*!< The second week of the month */
+	Third,	/*!< The third week of the month */
+	Fourth	/*!< The fourth week of the month */
 };
 
 
+/**
+ * \enum dow_t Provides values for the days of the week.
+ */
 enum dow_t {
-	Sun = 1,
-	Mon,
-	Tue,
-	Wed,
-	Thu,
-	Fri,
-	Sat
+	Sun = 1,	/*!< Sunday */
+	Mon,		/*!< Monday */
+	Tue,		/*!< Tuesday */
+	Wed,		/*!< Wednesday */
+	Thu,		/*!< Thursday */
+	Fri,		/*!< Friday */
+	Sat			/*!< Saturday */
 };
 
 
+/**
+ * \enum month_t Provides values for the months of the year.
+ */
 enum month_t {
-	Jan = 1,
-	Feb,
-	Mar,
-	Apr,
-	May,
-	Jun,
-	Jul,
-	Aug,
-	Sep,
-	Oct,
-	Nov,
-	Dec
+	Jan = 1,	/*!< January */
+	Feb,		/*!< February */
+	Mar,		/*!< March */
+	Apr,		/*!< April */
+	May,		/*!< May */
+	Jun,		/*!< June */
+	Jul,		/*!< July */
+	Aug,		/*!< August */
+	Sep,		/*!< September */
+	Oct,		/*!< October */
+	Nov,		/*!< November */
+	Dec			/*!< December */
 };
 
 
-
-/* structure to describe rules for when daylight/summer time begins, or when standard time begins. */
+/**
+ * \struct TimeChangeRule A structure to hold the rules describing when daylight savings time (or "summer time") begins,
+ *                        as well as when it ends.
+ */
 struct TimeChangeRule {
 	char abbrev[6];		/* XXX: five chars max */
 	uint8_t week;		/* WEEK of the MONTH: First, Second, Third, Fourth, or Last (week of the month) */
@@ -76,9 +86,24 @@ struct TimeChangeRule {
 };
 
 
-
+/**
+ * \class Timezone Provides an easy method to manage timezones, as well as daylight savings time (or "summer time") on
+ *                 Arduino devices. The "standard" Arduino time libraries are rather basic, and do not provide the very
+ *                 convenient, and useful featureset of timezone and DST management. With many new devices implementing
+ *                 an RTC in hardware, and many "legacy" projects are implementing RTC functionality with serial-based
+ *                 RTC devices (I²C and/or SPI), such as the DS1307, DS3231, etc..
+ */
 class Timezone {
 public:
+
+	/**
+	 * Constructor for a Timezone instance, given the rules which define the start and end of daylight savings time.
+	 *
+	 * \brief Constructor for Timezone instance
+	 *
+	 * \param [in] dstStart	The TimeChangeRule (data structure) defining the start of daylight savings time (DST)
+	 * \param [in] stdStart	The TimeChangeRule (data structure) defining the start of standard time (ie: the end of DST)
+	 */
 	Timezone(TimeChangeRule dstStart, TimeChangeRule stdStart);
 
 #ifdef __AVR__
