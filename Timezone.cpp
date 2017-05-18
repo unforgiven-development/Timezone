@@ -1,23 +1,24 @@
-/* ------------------------------------------------------------------------------------------------------------------ *
- * Timezone.cpp                                                                                                       *
- * -- Part of the Arduino 'Timezone' library                                                                          *
- *                                                                                                                    *
- * Copyright (c) 2017 Gerad Munsch <gmunsch@unforgivendevelopment.com>                                                *
- * Copyright (c) 2012 Jack Christensen                                                                                *
- *                                                                                                                    *
- * This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 Unported License. To view a copy of    *
- * this license, visit http://creativecommons.org/licenses/by-sa/3.0/ or send a letter to:                            *
- *     Creative Commons                                                                                               *
- *     171 Second Street                                                                                              *
- *     Suite 300                                                                                                      *
- *     San Francisco, CA 94105                                                                                        *
- *     United States of America                                                                                       *
- *                                                                                                                    *
- * ------------------------------------------------------------------------------------------------------------------ */
+/**
+ * ---------------------------------------------------------------------------------------------------------------------
+ * \file Timezone.cpp	The core functionality of the 'Timezone' library is provided by this file
+ *
+ * \author		Gerad Munsch <gmunsch@unforgivendevelopment.com>
+ * \author		Jack Christensen
+ * \date		2012-2017
+ * \copyright	This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 Unported License. To view a
+ *				copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/ or send a letter to:
+ *					Creative Commons
+ *					171 Second Street
+ *					Suite 300
+ *					San Francisco, CA 94105
+ *					 United States of America
+ *
+ * ---------------------------------------------------------------------------------------------------------------------
+ */
 
 #ifdef __AVR__
-  #include <avr/eeprom.h>
-#endif	/* __AVR__ */
+#include <avr/eeprom.h>
+#endif
 
 #include "Timezone.h"
 
@@ -38,15 +39,6 @@ Timezone::Timezone(TimeChangeRule dstStart, TimeChangeRule stdStart) {
 
 
 #ifdef __AVR__
-/**
- * Create a Timezone object from the time change rules stored in EEPROM at the given address. This only works on devices
- * with EEPROM (for now, it is limited to AVR devices).
- *
- * @brief Create a timezone object using rules stored in EEPROM
- *
- * @param[in] address EEPROM address where the timezone rules are located
- *
- */
 Timezone::Timezone(int address) {
 	readRules(address);
 }
