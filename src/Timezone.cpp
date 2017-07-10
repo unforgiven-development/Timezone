@@ -16,33 +16,33 @@
  * ---------------------------------------------------------------------------------------------------------------------
  */
 
+/**
+ * Check if we're running on \b AVR -- as it has \b EEPROM functionality available to store board-specific data, and the
+ * \c avr/eeprom.h file must be \c #included
+ */
 #ifdef __AVR__
 #include <avr/eeprom.h>
+#define PLATFORM_SUPPORTS_EEPROM 1
+#else
+#define PLATFORM_SUPPORTS_EEPROM 0
 #endif
 
 #include "Timezone.h"
 
 
-/**
- * Create a Timezone object from the given time change rules.
- *
- * @brief Create a timezone object using specified rules
- *
- * @param[in] dstStart TimeChangeRule object defining the start of DST
- * @param[in] stdStart TimeChangeRule object defining the end of DST
- *
- */
+
 Timezone::Timezone(TimeChangeRule dstStart, TimeChangeRule stdStart) {
 	_dst = dstStart;
 	_std = stdStart;
 }
 
 
-#ifdef __AVR__
-Timezone::Timezone(int address) {
+#if (PLATFORM_SUPPORTS_EEPROM == 1)
+/* Allow initialization using the timezone data stored in EEPROM on AVR platforms */
+Timezone::Timezone(uint16_t address) {
 	readRules(address);
 }
-#endif	/* __AVR__ */
+#endif
 
 
 /*----------------------------------------------------------------------*
@@ -216,35 +216,17 @@ time_t Timezone::toTime_t(TimeChangeRule r, int yr) {
 }
 
 
-#ifdef __AVR__
-/**
- * Read the timezone rules (DST and standard time) from EEPROM, starting at the given address.
- * XXX: Only valid on devices which contain EEPROM (AVR only, for now)
- *
- * @brief Read the timezone rules from EEPROM
- *
- * @param[in] address EEPROM address where the timezone rules begin.
- *
- */
-void Timezone::readRules(int address) {
+#if (PLATFORM_SUPPORTS_EEPROM == 1)
+void Timezone::readRules(uint16_t address) {
 	eeprom_read_block((void *) &_dst, (void *) address, sizeof(_dst));
 	address += sizeof(_dst);
 	eeprom_read_block((void *) &_std, (void *) address, sizeof(_std));
 }
 
 
-/**
- * Write the timezone rules (DST and standard time) to EEPROM, starting at the given address.
- * XXX: Only valid on devices which contain EEPROM (AVR only, for now)
- *
- * @brief Write the timezone rules to EEPROM
- *
- * @param[in] address EEPROM address where the timezone rules are to begin.
- *
- */
-void Timezone::writeRules(int address) {
+void Timezone::writeRules(uint16_t address) {
 	eeprom_write_block((void *) &_dst, (void *) address, sizeof(_dst));
 	address += sizeof(_dst);
 	eeprom_write_block((void *) &_std, (void *) address, sizeof(_std));
 }
-#endif	/* __AVR__ */
+#endif

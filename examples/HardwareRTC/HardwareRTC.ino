@@ -72,11 +72,13 @@ void printTime(time_t t, char *tz) {
 
 //Print an integer in "00" format (with leading zero).
 //Input value assumed to be between 0 and 99.
-void sPrintI00(int val)
-{
-    if (val < 10) Serial.print('0');
-    Serial.print(val, DEC);
-    return;
+void sPrintI00(int val) {
+	if (val < 10) {
+		Serial.print('0');
+	}
+	Serial.print(val, DEC);
+
+	return;
 }
 
 //Print an integer in ":00" format (with leading zero).
