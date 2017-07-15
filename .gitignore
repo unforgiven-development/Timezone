@@ -22,3 +22,5 @@ tmp_*
 # Ignore Doxygen-generated documentation, for now.
 ###
 docs/doxygen/
+cmake-build-debug/
+CMakeLists.txt
