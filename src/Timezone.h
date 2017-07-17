@@ -1,19 +1,23 @@
-/* ------------------------------------------------------------------------------------------------------------------ *
- * Timezone.h                                                                                                         *
- * -- Part of the Arduino 'Timezone' library                                                                          *
- *                                                                                                                    *
- * Copyright (c) 2017 Gerad Munsch <gmunsch@unforgivendevelopment.com>                                                *
- * Copyright (c) 2012 Jack Christensen                                                                                *
- *                                                                                                                    *
- * This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 Unported License. To view a copy of    *
- * this license, visit http://creativecommons.org/licenses/by-sa/3.0/ or send a letter to:                            *
- *     Creative Commons                                                                                               *
- *     171 Second Street                                                                                              *
- *     Suite 300                                                                                                      *
- *     San Francisco, CA 94105                                                                                        *
- *     United States of America                                                                                       *
- *                                                                                                                    *
- * ------------------------------------------------------------------------------------------------------------------ */
+/**
+ * \file Timezone.h
+ * Provides definitions for the Timezone library, including the class implementation, the various functions for the use
+ * of timezone rules, support for DST/summer-time, as well as the ability to store timezone and time-change rules in
+ * \b EEPROM (provided that the device supports the "standard" Arduino \b EEPROM library).
+ *
+ * \brief Provides definitions for the Timezone library
+ *
+ * \author		Gerad Munsch <gmunsch@unforgivendevelopment.com>
+ * \author		Jack Christensen
+ * \date		2012-2017
+ * \copyright	This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 Unported License. To view a
+ *				copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/ or send a letter to:
+ *					Creative Commons
+ *					171 Second Street
+ *					Suite 300
+ *					San Francisco, CA 94105
+ *					United States of America
+ *
+ */
 
 
 /**
@@ -58,7 +62,10 @@
 
 
 /**
- * Provides helpful values for week-of-month definitions for use with DST rules.
+ * An enumeration which provides helpful (ie: "human-readable") values for the
+ * "week-of-month" definitions for use with DST rules.
+ *
+ * \brief Provides "week-of-month" values
  */
 enum week_t {
 	Last,		/*!< The last week of the month */
@@ -71,6 +78,7 @@ enum week_t {
 
 /**
  * An enumeration to provide "friendly" values for the days of the week.
+ *
  * \brief Provides values for the days of the week.
  */
 enum dow_t {
@@ -86,6 +94,7 @@ enum dow_t {
 
 /**
  * An enumeration to provide "friendly" values for the months of the year.
+ *
  * \brief Provides values for the months of the year.
  */
 enum month_t {
@@ -107,6 +116,8 @@ enum month_t {
 /**
  * Provides a data structure to hold the rules describing when daylight savings time (or "summer time") begins, as well
  * as when it ends (ie: "standard time").
+ *
+ * \brief Holds the necessary info to define a time change rule
  */
 struct TimeChangeRule {
 	char    abbrev[6];	/*!< Abbreviation for the rule \note five chars max */
@@ -124,21 +135,11 @@ struct TimeChangeRule {
  * The "standard" Arduino time libraries are rather basic, and do not provide the very convenient, and useful featureset
  * of timezone and DST management. With many new devices implementing an RTC in hardware, and many "legacy" projects are
  * implementing RTC functionality with serial-based RTC devices (I²C and/or SPI), such as the DS1307, DS3231, etc..
+ *
+ * \brief Provides timezone and DST/summer-time support for the Arduino TimeLib
  */
 class Timezone {
 public:
-
-
-/**
- * Create a Timezone object from the given time change rules.
- *
- * \brief Create a timezone object using specified rules
- *
- * \param[in] dstStart TimeChangeRule object defining the start of DST
- * \param[in] stdStart TimeChangeRule object defining the end of DST
- *
- */
-
 	/**
 	 * \fn Timezone(TimeChangeRule dstStart, TimeChangeRule stdStart)
 	 * Constructor for a Timezone instance, given the rules which define the start and end of daylight savings time.
@@ -164,11 +165,20 @@ public:
 	Timezone(uint16_t address);
 #endif
 
+
 	time_t toLocal(time_t utc);
+
+
 	time_t toLocal(time_t utc, TimeChangeRule **tcr);
+
+
 	time_t toUTC(time_t local);
 
+
+
 	bool utcIsDST(time_t utc);
+
+
 	bool locIsDST(time_t local);
 
 #if (PLATFORM_SUPPORTS_EEPROM == 1)
@@ -209,4 +219,6 @@ private:
 	time_t _stdLoc;			/* STD time start for given/current year, given in local time */
 };
 
-#endif	/* __TIMEZONE_H__ */
+
+
+#endif	/* _TIMEZONE_H__ */
